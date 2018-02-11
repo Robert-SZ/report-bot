@@ -10,6 +10,7 @@ const token = '483294605:AAGOr-Xzc8AB126zSocXyj4g37GZ5LgKdfw';
 const bot = new TelegramBot(token, {polling: true});
 
 let roles = questionsProvider.getRoles();
+
 let users = {};
 
 const getNewState = (state) => {
@@ -99,7 +100,6 @@ const getAnswerText = (answer) => {
 
 const generateReport = (userId) => {
     let report = '';
-    //Object.keys(users).forEach(userId => {
     let user = users[userId];
     if (user.report && user.report.answers && user.report.answers.length > 0) {
         report = report + '<b>' + user.name + '</b>\n';
@@ -108,24 +108,21 @@ const generateReport = (userId) => {
             report = report + '<i>' + getAnswerText(answer) + '</i>\n';
         })
     }
-    //});
     return report;
 };
 
 let generateShortReport = (userId) => {
     let report = '';
-    //Object.keys(users).forEach(userId => {
     let user = users[userId];
     if (user.report && user.report.answers && user.report.answers.length > 0) {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
-            if (answer.number !== 2 && answer.number !== 3 && answer.number !== 14) {
+            if (answer.report === 2) {
                 report = report + '<b>' + answer.number + ' ' + answer.question + '</b>\n';
                 report = report + '<i>' + getAnswerText(answer) + '</i>\n';
             }
         })
     }
-    //});
     return report;
 };
 
@@ -136,7 +133,7 @@ let generateShortCorporateReport = (userId) => {
     if (user.report && user.report.answers && user.report.answers.length > 0) {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
-            if (answer.question === 'Напиши важную мысль за день (отчёт корп. Самураев):\n') {
+            if (answer.report === 1) {
                 report = report + '<i>' + getAnswerText(answer) + '</i>\n';
             }
         })
@@ -149,6 +146,7 @@ let proccessMessage = (msg) => {
 
 
     let user = getUser(msg);
+    const reports = questionsProvider.getReports(user.role);
     let currentState = getNewState(user.currentState);
     let text = msg.text;
     saveUsers();
@@ -225,7 +223,8 @@ let proccessMessage = (msg) => {
                 question: prevQuestion.question,
                 number: user.report.currentQuestion,
                 answer: text,
-                type: prevQuestion.type
+                type: prevQuestion.type,
+                report: prevQuestion.report
             });
             user.report.currentQuestion = prevQuestion.next(text);
         } else {
@@ -242,6 +241,7 @@ let proccessMessage = (msg) => {
             sendMessage(user.chatId, 'Спасибо что заполнили отчет!', [['Меню']]);
             sendMessage(variables.corporateSamuraiChatId, generateShortCorporateReport(user.id));
             sendMessage(variables.shortReportsChatId, generateShortReport(user.id));
+            sendMessage(variables.reportsChatId, generateReport(user.id));
         } else {
             switch (question.type) {
                 case 'text':
@@ -255,20 +255,20 @@ let proccessMessage = (msg) => {
     }
 };
 
-setInterval(() => {
-    let now = new Date();
-    Object.keys(users).forEach(userId => {
-        let user = users[userId];
-
-        let minutes = new Date(new Date().getTime() - (new Date(user.lastActivityDate)).getTime()).getMinutes();
-        if (minutes > 10 && user.report.nextDate > now) {
-            let fillInReport = 'Заполнить отчет';
-            let later = 'Позже';
-            let commands = [fillInReport, later];
-            sendMessage(user.chatId, "Хотите заполнить отчет сейчас?", [commands]);
-        }
-    })
-}, 1000 * 30);
+// setInterval(() => {
+//     let now = new Date();
+//     Object.keys(users).forEach(userId => {
+//         let user = users[userId];
+//
+//         let minutes = new Date(new Date().getTime() - (new Date(user.lastActivityDate)).getTime()).getMinutes();
+//         if (minutes > 10 && user.report.nextDate > now) {
+//             let fillInReport = 'Заполнить отчет';
+//             let later = 'Позже';
+//             let commands = [fillInReport, later];
+//             sendMessage(user.chatId, "Хотите заполнить отчет сейчас?", [commands]);
+//         }
+//     })
+// }, 1000 * 30);
 
 loadUsers();
 

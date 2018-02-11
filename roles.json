@@ -1,178 +1,249 @@
 {
-  "roles":[{
-    "role":{
-      "name": "Маркетолог",
-      "questions": [{
-        "number" : 1,
-        "question": "Сколько объявлений ты сегодня сделал по своему проекту?\n",
-        "type": "number",
-        "next": "2"
-      }, {
-        "number" : 2,
-        "question": "Проект идёт в плане по заявкам?\n",
-        "type": "yesno",
-        "next": "answer === 1 ? 4 : 3"
-        },{
-        "number" : 3,
-        "question": "Почему проект не плане и что ты намерен сделать для этого?\n",
-        "type": "text",
-        "next": "4"
-      },{
-        "number" : 4,
-        "question": "Сколько заявок ты привлек сегодня?\n",
-        "type": "number",
-        "next": "5"
-      },{
-        "number" : 5,
-        "question": "Средняя стоимость заявки за день в ВК?\n",
-        "type": "number",
-        "next": "6"
-      },{
-        "number" : 6,
-        "question": "Средняя стоимость заявки за день в ФБ?\n",
-        "type": "number",
-        "next": "7"
-      },{
-        "number" : 7,
-        "question": "Средняя стоимость заявки за день в ЯД?\n",
-        "type": "number",
-        "next": "8"
-      },{
-          "number" : 8,
-          "question": "Средняя стоимость заявки за день в GA?\n",
-          "type": "number",
-          "next": "9"
-        },{
-        "number" : 9,
-        "question": "Записал сегодня аффирмации в чат?\n",
-        "type": "yesno",
-        "next": "10"
-      },{
-        "number" : 10,
-        "question": "Участвовал ли в тренеровке маркетологов?\n",
-        "type": "yesno",
-        "next": "11"
-      },{
-        "number" : 11,
-        "question": "Участвовал ли в утренней разгонке?\n",
-        "type": "yesno",
-        "next": "12"
-      },{
-        "number" : 12,
-        "question": "Выполнил сегодня свою «Одну вещь»?\n",
-        "type": "yesno",
-        "next": "13"
-      },{
-        "number" : 13,
-        "question": "Написал сегодня ежедневный отчет?\n",
-        "type": "yesno",
-        "next": "14"
-      },{
-        "number" : 14,
-        "question": "Напиши важную мысль за день (отчёт корп. Самураев):\n",
-        "type": "text",
-        "next": "15",
-        "sendToChat": "-316068133"
-      },{
-        "number" : 15,
-        "question": "Сколько 2-х часовых отчетов ты написал сегодня?\n",
-        "type": "number",
-        "next": "16"
-      },{
-        "number" : 16,
-        "question": "Сколько заявок ты привлек сегодня?\n",
-        "type": "number",
-        "next": "17"
-      },{
-        "number" : 17,
-        "question": "Писал ли ты благодарность в чат благодарностей? (Если нет, то ты можешь сделать это сейчас https://t.me/joinchat/BE-8WQ-8ev256gOzUNmnzg)\n",
-        "type": "yesno",
-        "next": "18"
-      },{
-        "number" : 18,
-        "question": "Пополнял ли ты сегодня базу знаний?\n",
-        "type": "yesno",
-        "next": "19"
-      },{
-        "number" : 19,
-        "question": "Что ещё важного ты сегодня сделал (можно писать словами фразами в столбик)?\n",
-        "type": "text",
-        "next": "0",
-        "sendToChat": "-316068133"
-      }]
-
+  "roles": [
+    {
+      "role": {
+        "name": "Маркетолог",
+        "questions": [
+          {
+            "number": 1,
+            "question": "Сколько объявлений ты сегодня сделал по своему проекту?\n",
+            "type": "number",
+            "next": "2",
+            "report": 2
+          },
+          {
+            "number": 2,
+            "question": "Проект идёт в плане по заявкам?\n",
+            "type": "yesno",
+            "next": "answer === 1 ? 4 : 3"
+          },
+          {
+            "number": 3,
+            "question": "Почему проект не плане и что ты намерен сделать для этого?\n",
+            "type": "text",
+            "next": "4",
+            "report": 2
+          },
+          {
+            "number": 4,
+            "question": "Сколько заявок ты привлек сегодня?\n",
+            "type": "number",
+            "next": "5",
+            "report": 2
+          },
+          {
+            "number": 5,
+            "question": "Средняя стоимость заявки за день в ВК?\n",
+            "type": "number",
+            "next": "6",
+            "report": 2
+          },
+          {
+            "number": 6,
+            "question": "Средняя стоимость заявки за день в ФБ?\n",
+            "type": "number",
+            "next": "7",
+            "report": 2
+          },
+          {
+            "number": 7,
+            "question": "Средняя стоимость заявки за день в ЯД?\n",
+            "type": "number",
+            "next": "8",
+            "report": 2
+          },
+          {
+            "number": 8,
+            "question": "Средняя стоимость заявки за день в GA?\n",
+            "type": "number",
+            "next": "9",
+            "report": 2
+          },
+          {
+            "number": 9,
+            "question": "Записал сегодня аффирмации в чат?\n",
+            "type": "yesno",
+            "next": "10",
+            "report": 2
+          },
+          {
+            "number": 10,
+            "question": "Участвовал ли в тренеровке маркетологов?\n",
+            "type": "yesno",
+            "next": "11",
+            "report": 2
+          },
+          {
+            "number": 11,
+            "question": "Участвовал ли в утренней разгонке?\n",
+            "type": "yesno",
+            "next": "12",
+            "report": 2
+          },
+          {
+            "number": 12,
+            "question": "Выполнил сегодня свою «Одну вещь»?\n",
+            "type": "yesno",
+            "next": "13",
+            "report": 2
+          },
+          {
+            "number": 13,
+            "question": "Написал сегодня ежедневный отчет?\n",
+            "type": "yesno",
+            "next": "14",
+            "report": 2
+          },
+          {
+            "number": 14,
+            "question": "Напиши важную мысль за день (отчёт корп. Самураев):\n",
+            "type": "text",
+            "next": "15",
+            "report": 1
+          },
+          {
+            "number": 15,
+            "question": "Сколько 2-х часовых отчетов ты написал сегодня?\n",
+            "type": "number",
+            "next": "16",
+            "report": 2
+          },
+          {
+            "number": 16,
+            "question": "Сколько заявок ты привлек сегодня?\n",
+            "type": "number",
+            "next": "17",
+            "report": 2
+          },
+          {
+            "number": 17,
+            "question": "Писал ли ты благодарность в чат благодарностей? (Если нет, то ты можешь сделать это сейчас https://t.me/joinchat/BE-8WQ-8ev256gOzUNmnzg)\n",
+            "type": "yesno",
+            "next": "18",
+            "report": 2
+          },
+          {
+            "number": 18,
+            "question": "Пополнял ли ты сегодня базу знаний?\n",
+            "type": "yesno",
+            "next": "19",
+            "report": 2
+          },
+          {
+            "number": 19,
+            "question": "Что ещё важного ты сегодня сделал (можно писать словами фразами в столбик)?\n",
+            "type": "text",
+            "next": "0",
+            "report": 2
+          }
+        ],
+        "reports": {
+          "1": "-316068133",
+          "2": "-316068133",
+          "fullReport": "-316068133"
+        }
+      }
+    },
+    {
+      "role": {
+        "name": "Продавец",
+        "questions": [
+          {
+            "number": 1,
+            "question": "Сколько минут ты сегодня выговорил?\n",
+            "type": "number",
+            "next": "answer < 120 ? 2 : 4",
+            "report": 2
+          },
+          {
+            "number": 2,
+            "question": "Что тебе помешало выговорить 2 часа, чтобы мы могли понять чем тебе помочь?\n",
+            "type": "text",
+            "next": "3"
+          },
+          {
+            "number": 3,
+            "question": "Какую выручку ты сделал сегодня?\n",
+            "type": "number",
+            "next": "4"
+          },
+          {
+            "number": 4,
+            "question": "Записал сегодня аффирмации в чат?\n",
+            "type": "yesno",
+            "next": "5",
+            "report": 2
+          },
+          {
+            "number": 5,
+            "question": "Участвовал ли в тренеровке маркетологов?\n",
+            "type": "yesno",
+            "next": "6",
+            "report": 2
+          },
+          {
+            "number": 6,
+            "question": "Участвовал ли в утренней разгонке?\n",
+            "type": "yesno",
+            "next": "7",
+            "report": 2
+          },
+          {
+            "number": 7,
+            "question": "Выполнил сегодня свою «Одну вещь»?\n",
+            "type": "yesno",
+            "next": "8",
+            "report": 2
+          },
+          {
+            "number": 8,
+            "question": "Написал сегодня ежедневный отчет?\n",
+            "type": "yesno",
+            "next": "9",
+            "report": 2
+          },
+          {
+            "number": 9,
+            "question": "Напиши важную мысль за день (отчёт корп. Самураев):\n",
+            "type": "text",
+            "next": "10",
+            "report": 1
+          },
+          {
+            "number": 10,
+            "question": "Сколько 2-х часовых отчетов ты написал сегодня?\n",
+            "type": "number",
+            "next": "11",
+            "report": 2
+          },
+          {
+            "number": 11,
+            "question": "Писал ли ты благодарность в чат благодарностей? (Если нет, то ты можешь сделать это сейчас https://t.me/joinchat/BE-8WQ-8ev256gOzUNmnzg)\n",
+            "type": "yesno",
+            "next": "12",
+            "report": 2
+          },
+          {
+            "number": 12,
+            "question": "Пополнял ли ты сегодня базу знаний?\n",
+            "type": "yesno",
+            "next": "13",
+            "report": 2
+          },
+          {
+            "number": 13,
+            "question": "Что ещё важного ты сегодня сделал (можно писать словами фразами в столбик)?\n",
+            "type": "text",
+            "next": "0",
+            "report": 2
+          }
+        ],
+        "reports": {
+          "1": "-316068133",
+          "2": "-316068133",
+          "fullReport": "-316068133"
+        }
+      }
     }
-  },{
-    "role":{
-      "name": "Продавец",
-      "questions": [{
-        "number" : 1,
-        "question": "Сколько минут ты сегодня выговорил?\n",
-        "type": "number",
-        "next": "answer < 120 ? 2 : 4"
-      }, {
-        "number" : 2,
-        "question": "Что тебе помешало выговорить 2 часа, чтобы мы могли понять чем тебе помочь?\n",
-        "type": "text",
-        "next": "3"
-      },{
-        "number" : 3,
-        "question": "Какую выручку ты сделал сегодня?\n",
-        "type": "number",
-        "next": "4"
-      },{
-        "number" : 4,
-        "question": "Записал сегодня аффирмации в чат?\n",
-        "type": "yesno",
-        "next": "5"
-      },{
-        "number" : 5,
-        "question": "Участвовал ли в тренеровке маркетологов?\n",
-        "type": "yesno",
-        "next": "6"
-      },{
-        "number" : 6,
-        "question": "Участвовал ли в утренней разгонке?\n",
-        "type": "yesno",
-        "next": "7"
-      },{
-        "number" : 7,
-        "question": "Выполнил сегодня свою «Одну вещь»?\n",
-        "type": "yesno",
-        "next": "8"
-      },{
-        "number" : 8,
-        "question": "Написал сегодня ежедневный отчет?\n",
-        "type": "yesno",
-        "next": "9"
-      },{
-        "number" : 9,
-        "question": "Напиши важную мысль за день (отчёт корп. Самураев):\n",
-        "type": "text",
-        "next": "10",
-        "sendToChat": "-316068133"
-      },{
-        "number" : 10,
-        "question": "Сколько 2-х часовых отчетов ты написал сегодня?\n",
-        "type": "number",
-        "next": "11"
-      },{
-        "number" : 11,
-        "question": "Писал ли ты благодарность в чат благодарностей? (Если нет, то ты можешь сделать это сейчас https://t.me/joinchat/BE-8WQ-8ev256gOzUNmnzg)\n",
-        "type": "yesno",
-        "next": "12"
-      },{
-        "number" : 12,
-        "question": "Пополнял ли ты сегодня базу знаний?\n",
-        "type": "yesno",
-        "next": "13"
-      },{
-        "number" : 13,
-        "question": "Что ещё важного ты сегодня сделал (можно писать словами фразами в столбик)?\n",
-        "type": "text",
-        "next": "0",
-        "sendToChat": "-316068133"
-      }]
-    }
-  }]
+  ]
 }

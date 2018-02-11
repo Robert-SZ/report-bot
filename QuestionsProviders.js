@@ -11,8 +11,15 @@ class QuestionsProviders {
         if (!role[0])
             throw new Error("Specified role doesn't exists");
         let question = role[0].role.questions.filter(q => q.number === number)[0];
-        return !!question ? new Question(question.number, question.question, question.type, question.next, question.sendToChat) : null;
+        return !!question ? new Question(question.number, question.question, question.type, question.next, question.report) : null;
 
+    }
+
+    getReports(name){
+        let role = roles.roles.filter(item => item.role.name === name);
+        if (!role[0])
+            throw new Error("Specified role doesn't exists");
+        return role[0].role.reports;
     }
 }
 
