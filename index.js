@@ -1,12 +1,9 @@
 const fs = require('fs');
 const StateMachine = require('javascript-state-machine');
 const TelegramBot = require('node-telegram-bot-api');
-const MarketologReport = require('./marketologReport');
-const SaleReport = require('./saleReport');
 const variables = require('./variables.json');
 const QuestionsProvider = require('./QuestionsProviders');
 const questionsProvider = new QuestionsProvider();
-
 
 
 const token = '483294605:AAGOr-Xzc8AB126zSocXyj4g37GZ5LgKdfw';
@@ -14,10 +11,6 @@ const bot = new TelegramBot(token, {polling: true});
 
 let roles = questionsProvider.getRoles();
 let users = {};
-
-const YES = '✅ Да';
-const NO = '❌ Нет';
-
 
 const getNewState = (state) => {
     let fsm = new StateMachine({
@@ -96,7 +89,15 @@ const sendMessage = (chatId, text, commands) => {
     }
 };
 
-let generateReport = (userId) => {
+const getAnswerText = (answer) => {
+    let answerText = answer.answer;
+    if (answer.type === variables.QuestionType.YesNo) {
+        answerText = answerText == 1 ? variables.YES : variables.NO;
+    }
+    return answerText;
+};
+
+const generateReport = (userId) => {
     let report = '';
     //Object.keys(users).forEach(userId => {
     let user = users[userId];
@@ -104,7 +105,7 @@ let generateReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             report = report + '<b>' + answer.number + ' ' + answer.question + '</b>\n';
-            report = report + '<i>' + answer.asnwer + '</i>\n';
+            report = report + '<i>' + getAnswerText(answer) + '</i>\n';
         })
     }
     //});
@@ -120,7 +121,7 @@ let generateShortReport = (userId) => {
         user.report.answers.forEach(answer => {
             if (answer.number !== 2 && answer.number !== 3 && answer.number !== 14) {
                 report = report + '<b>' + answer.number + ' ' + answer.question + '</b>\n';
-                report = report + '<i>' + answer.asnwer + '</i>\n';
+                report = report + '<i>' + getAnswerText(answer) + '</i>\n';
             }
         })
     }
@@ -136,7 +137,7 @@ let generateShortCorporateReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             if (answer.question === 'Напиши важную мысль за день (отчёт корп. Самураев):\n') {
-                report = report + '<i>' + answer.asnwer + '</i>\n';
+                report = report + '<i>' + getAnswerText(answer) + '</i>\n';
             }
         })
     }
@@ -149,7 +150,7 @@ let proccessMessage = (msg) => {
 
     let user = getUser(msg);
     let currentState = getNewState(user.currentState);
-    const text = msg.text;
+    let text = msg.text;
     saveUsers();
 
     let reportCommand = 'Отчет';
@@ -175,7 +176,7 @@ let proccessMessage = (msg) => {
                 user.role = text;
                 currentState.toWaitForReport();
                 user.currentState = currentState.state;
-                sendMessage(user.chatId, "Вы выбрали роль " + text);
+                //sendMessage(user.chatId, "Вы выбрали роль " + text);
             }
         }
     }
@@ -206,10 +207,25 @@ let proccessMessage = (msg) => {
 
         if (user.report.currentQuestion > 0) {
             let prevQuestion = questionsProvider.getQuestionByRole(user.role, user.report.currentQuestion);
+            switch (prevQuestion.type) {
+                case 'yesno':
+                    if (text !== variables.YES && text !== variables.NO) {
+                        return sendMessage(user.chatId, '⚠️Ответ нужно выбрать кнопкой Да или Нет⚠️', [[variables.YES, variables.NO]]);
+                    }
+                    text === variables.YES ? text = 1 : text = 2;
+                    break;
+                case 'number':
+                    text = text.replace(',', '.');
+                    if (isNaN(text)) {
+                        return sendMessage(user.chatId, '⚠️Ответ на данный вопрос должен быть числом⚠️', null);
+                    }
+                    break;
+            }
             user.report.answers.push({
                 question: prevQuestion.question,
                 number: user.report.currentQuestion,
-                asnwer: text
+                answer: text,
+                type: prevQuestion.type
             });
             user.report.currentQuestion = prevQuestion.next(text);
         } else {
@@ -217,8 +233,9 @@ let proccessMessage = (msg) => {
             user.report.date = new Date();
             user.report.currentQuestion++;
         }
+
         let question = questionsProvider.getQuestionByRole(user.role, user.report.currentQuestion);
-        if (!question.question) {
+        if (!question) {
             currentState.toWaitForReport();
             user.currentState = currentState.state;
             user.report.currentQuestion = 0;
@@ -226,18 +243,16 @@ let proccessMessage = (msg) => {
             sendMessage(variables.corporateSamuraiChatId, generateShortCorporateReport(user.id));
             sendMessage(variables.shortReportsChatId, generateShortReport(user.id));
         } else {
-            if (question.type === 'text') {
-                //sendMessage(user.chatId, question.question, [['Меню']]);
-                sendMessage(user.chatId, question.question, null);
-            }
-            if (question.type === 'yesno') {
-                //sendMessage(user.chatId, question.question, [['Да', 'Нет'], ['Меню']]);
-                sendMessage(user.chatId, question.question, [[YES, NO]]);
+            switch (question.type) {
+                case 'text':
+                    return sendMessage(user.chatId, question.question, null);
+                case 'number':
+                    return sendMessage(user.chatId, question.question, null);
+                case 'yesno':
+                    return sendMessage(user.chatId, question.question, [[variables.YES, variables.NO]]);
             }
         }
-
     }
-
 };
 
 setInterval(() => {
