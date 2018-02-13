@@ -73,21 +73,21 @@ const getUser = (msg) => {
 };
 
 const sendMessage = (chatId, text, commands) => {
-    if (!commands) {
-        bot.sendMessage(chatId, text, {
-            "reply_markup": {
-                hide_keyboard: true
-            },
-            parse_mode: "HTML"
-        });
-    } else {
-        bot.sendMessage(chatId, text, {
-            "reply_markup": {
-                "keyboard": commands
-            },
-            parse_mode: "HTML"
-        });
-    }
+    // if (!commands) {
+    //     bot.sendMessage(chatId, text, {
+    //         "reply_markup": {
+    //             hide_keyboard: true
+    //         },
+    //         parse_mode: "HTML"
+    //     });
+    // } else {
+    //     bot.sendMessage(chatId, text, {
+    //         "reply_markup": {
+    //             "keyboard": commands
+    //         },
+    //         parse_mode: "HTML"
+    //     });
+    // }
 };
 
 const getAnswerText = (answer) => {
