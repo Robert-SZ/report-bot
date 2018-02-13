@@ -104,8 +104,8 @@ const generateReport = (userId) => {
     if (user.report && user.report.answers && user.report.answers.length > 0) {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
-            report = report + '<b>' + answer.number + ' ' + answer.question + '</b>\n';
-            report = report + '<i>' + getAnswerText(answer) + '</i>\n';
+            report = report + '<b>' + answer.question + '</b>';
+            report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
         })
     }
     return report;
@@ -118,8 +118,8 @@ let generateShortReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             if (answer.report === 2) {
-                report = report + '<b>' + answer.number + ' ' + answer.question + '</b>\n';
-                report = report + '<i>' + getAnswerText(answer) + '</i>\n';
+                report = report + '<b>' + answer.question + '</b>';
+                report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
             }
         })
     }
@@ -134,7 +134,7 @@ let generateShortCorporateReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             if (answer.report === 1) {
-                report = report + '<i>' + getAnswerText(answer) + '</i>\n';
+                report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
             }
         })
     }
@@ -146,7 +146,7 @@ let proccessMessage = (msg) => {
 
 
     let user = getUser(msg);
-    const reports = questionsProvider.getReports(user.role);
+    //const reports = questionsProvider.getReports(user.role);
     let currentState = getNewState(user.currentState);
     let text = msg.text;
     saveUsers();
