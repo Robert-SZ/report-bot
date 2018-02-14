@@ -8,6 +8,7 @@ const questionsProvider = new QuestionsProvider();
 
 const token = '483294605:AAGOr-Xzc8AB126zSocXyj4g37GZ5LgKdfw';
 const bot = new TelegramBot(token, {polling: true});
+const systemChats = [variables.reportsChatId, variables.corporateSamuraiChatId, variables.shortReportsChatId];
 
 let roles = questionsProvider.getRoles();
 
@@ -143,7 +144,10 @@ let generateShortCorporateReport = (userId) => {
 
 
 let proccessMessage = (msg) => {
-
+    if (!msg.text)
+        return;
+    if (msg.chat && systemChats.indexOf(msg.chat.id.toString()) > -1)
+        return;
 
     let user = getUser(msg);
     //const reports = questionsProvider.getReports(user.role);
