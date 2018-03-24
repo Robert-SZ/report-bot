@@ -11,7 +11,7 @@ class QuestionsProviders {
         if (!role[0])
             throw new Error("Specified role doesn't exists");
         let question = role[0].role.questions.filter(q => q.number === number)[0];
-        return !!question ? new Question(question.number, question.question, question.type, question.next, question.report) : null;
+        return !!question ? new Question(question.number, question.question, question.type, question.next, question.report, question.options) : null;
 
     }
 

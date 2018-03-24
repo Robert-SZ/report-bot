@@ -6,7 +6,7 @@ const QuestionsProvider = require('./QuestionsProviders');
 const questionsProvider = new QuestionsProvider();
 
 
-const token = '483294605:AAGOr-Xzc8AB126zSocXyj4g37GZ5LgKdfw';
+const token = '563090437:AAF0qZkhpsqX8pqo5vfXagj0BCQZRI41oEc';
 const bot = new TelegramBot(token, {polling: true});
 const systemChats = [variables.reportsChatId, variables.corporateSamuraiChatId, variables.shortReportsChatId];
 
@@ -106,8 +106,8 @@ const generateReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             report = report + '<b>' + answer.question + '</b>';
-            report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
-        })
+        report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
+    })
     }
     return report;
 };
@@ -119,10 +119,10 @@ let generateShortReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             if (answer.report === 2) {
-                report = report + '<b>' + answer.question + '</b>';
-                report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
-            }
-        })
+            report = report + '<b>' + answer.question + '</b>';
+            report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
+        }
+    })
     }
     return report;
 };
@@ -135,9 +135,9 @@ let generateShortCorporateReport = (userId) => {
         report = report + '<b>' + user.name + '</b>\n';
         user.report.answers.forEach(answer => {
             if (answer.report === 1) {
-                report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
-            }
-        })
+            report = report + '<i>' + getAnswerText(answer) + '</i>\n\n';
+        }
+    })
     }
     return report;
 };
@@ -209,6 +209,7 @@ let proccessMessage = (msg) => {
 
         if (user.report.currentQuestion > 0) {
             let prevQuestion = questionsProvider.getQuestionByRole(user.role, user.report.currentQuestion);
+            //Этот блок для проверки введенного ответа
             switch (prevQuestion.type) {
                 case 'yesno':
                     if (text !== variables.YES && text !== variables.NO) {
@@ -220,6 +221,13 @@ let proccessMessage = (msg) => {
                     text = text.replace(',', '.');
                     if (isNaN(text)) {
                         return sendMessage(user.chatId, '⚠️Ответ на данный вопрос должен быть числом⚠️', null);
+                    }
+                    break;
+                case 'options':
+                    let option= prevQuestion.options.filter(item=>item.text==text)[0];
+                    text = option.next;
+                    if (option.message){
+                        sendMessage(user.chatId, option.message, null);
                     }
                     break;
             }
@@ -254,6 +262,9 @@ let proccessMessage = (msg) => {
                     return sendMessage(user.chatId, question.question, null);
                 case 'yesno':
                     return sendMessage(user.chatId, question.question, [[variables.YES, variables.NO]]);
+                case 'options':
+                    let optionQuestions = question.options.map(item => item.text);
+                    return sendMessage(user.chatId,  question.question, [optionQuestions])
             }
         }
     }

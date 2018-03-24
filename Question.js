@@ -1,5 +1,5 @@
 class Question {
-    constructor(number, question, type, next, report) {
+    constructor(number, question, type, next, report, options) {
         this.number = number;
         this.question = question;
         this.type = type || 'text';
@@ -7,6 +7,7 @@ class Question {
             return eval(next);
         };
         this.report = report;
+        this.options = options;
     }
 
 
